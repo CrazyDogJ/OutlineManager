@@ -27,7 +27,10 @@ class OUTLINEMANAGER_API UOutlineActorComponent : public UActorComponent
 public:
 	UOutlineActorComponent();
 
-	UPROPERTY(BlueprintReadWrite, EditAnywhere, ReplicatedUsing=OnRep_Properties)
+	UFUNCTION(BlueprintCallable)
+	void SetOutlineProperties(FOutlineCompProperties InProperty);
+	
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, ReplicatedUsing=OnRep_Properties)
 	FOutlineCompProperties Properties;
 
 	UFUNCTION()

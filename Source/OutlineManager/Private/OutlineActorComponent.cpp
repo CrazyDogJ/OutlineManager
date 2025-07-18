@@ -13,6 +13,15 @@ UOutlineActorComponent::UOutlineActorComponent()
 	SetIsReplicatedByDefault(true);
 }
 
+void UOutlineActorComponent::SetOutlineProperties(FOutlineCompProperties InProperty)
+{
+	Properties = InProperty;
+	if (GetOwner()->HasAuthority())
+	{
+		OnRep_Properties();
+	}
+}
+
 void UOutlineActorComponent::OnRep_Properties()
 {
 	GetWorld()->GetSubsystem<UOutlineSubsystem>()->ComponentUpdatedEvent.Broadcast(this);
@@ -29,6 +38,14 @@ void UOutlineActorComponent::ToggleOutline(bool bEnable)
 	if (GetOwner()->GetLocalRole() == ROLE_AutonomousProxy)
 	{
 		return;
+	}
+	// Ignore local pawn when listen server.
+	if (auto OwnerPawn = Cast<APawn>(GetOwner()))
+	{
+		if (OwnerPawn->IsLocallyControlled())
+		{
+			return;
+		}
 	}
 	
 	auto Comps = GetOwner()->GetComponents();
