@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Copyright 2025 Vzen Lu. All Rights Reserved.
 
 #pragma once
 
@@ -16,19 +16,19 @@ class OUTLINEMANAGER_API UCameraModifier_Outline : public UCameraModifier
 
 public:
 	/** Pre set custom stencil color */
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Outline")
 	TMap<int, FLinearColor> OutlineColors;
 
-	UPROPERTY(BlueprintReadOnly)
+	UPROPERTY(BlueprintReadOnly, Category = "Outline")
 	TMap<int, UMaterialInterface*> OutlineInstanceMaterials;
 	
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Outline")
 	UMaterialInterface* OutlineMaterial;
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Outline")
 	FName ColorPropertyName = "OutlineColor";
 
-	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly)
+	UPROPERTY(BlueprintReadOnly, EditDefaultsOnly, Category = "Outline")
 	FName CustomStencilPropertyName = "StencilValue";
 	
 	virtual void AddedToCamera(APlayerCameraManager* Camera) override;

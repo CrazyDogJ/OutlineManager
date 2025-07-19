@@ -1,4 +1,4 @@
-﻿// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Copyright 2025 Vzen Lu. All Rights Reserved.
 
 #pragma once
 
@@ -13,15 +13,15 @@ struct FOutlineCompProperties
 	GENERATED_BODY()
 
 	// If visible tag updated, the stencil value we enabled.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Outline")
 	int CustomStencilValue;
 
 	// Visible identity gameplay tags.
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Outline")
 	FGameplayTagContainer IdentityGameplayTag;
 
 	// Should we ignore self controlled pawn's stencil settings?
-	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Outline")
 	bool bIgnoreSelf = true;
 };
 
