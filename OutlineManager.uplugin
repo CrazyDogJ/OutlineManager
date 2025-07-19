@@ -13,7 +13,7 @@
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": false,
-	"EngineVersion": "5.5.4",
+	"EngineVersion": "5.5",
 	"Modules": [
 		{
 			"Name": "OutlineManager",
