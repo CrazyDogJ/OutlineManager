@@ -1,12 +1,16 @@
 ﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "OutlineManager.h"
+#include "GameplayTagsManager.h"
 
 #define LOCTEXT_NAMESPACE "FOutlineManagerModule"
 
 void FOutlineManagerModule::StartupModule()
 {
-	// This code will execute after your module is loaded into memory; the exact timing is specified in the .uplugin file per-module
+	UGameplayTagsManager& Manager = UGameplayTagsManager::Get();
+	Manager.AddNativeGameplayTag(FName("Outline.Identity.Item"));
+	Manager.AddNativeGameplayTag(FName("Outline.Identity.Player"));
+	Manager.AddNativeGameplayTag(FName("Outline.Identity.Temp"));
 }
 
 void FOutlineManagerModule::ShutdownModule()

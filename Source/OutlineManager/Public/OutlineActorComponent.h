@@ -12,11 +12,17 @@ struct FOutlineCompProperties
 {
 	GENERATED_BODY()
 
+	// If visible tag updated, the stencil value we enabled.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	int CustomStencilValue;
 
+	// Visible identity gameplay tags.
 	UPROPERTY(BlueprintReadWrite, EditAnywhere)
 	FGameplayTagContainer IdentityGameplayTag;
+
+	// Should we ignore self controlled pawn's stencil settings?
+	UPROPERTY(BlueprintReadWrite, EditAnywhere)
+	bool bIgnoreSelf = true;
 };
 
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent), Blueprintable)
@@ -27,26 +33,36 @@ class OUTLINEMANAGER_API UOutlineActorComponent : public UActorComponent
 public:
 	UOutlineActorComponent();
 
-	UFUNCTION(BlueprintCallable)
+	// Update outline properties in runtime
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Outline")
 	void SetOutlineProperties(FOutlineCompProperties InProperty);
-	
-	UPROPERTY(BlueprintReadOnly, EditAnywhere, ReplicatedUsing=OnRep_Properties)
+
+	// Set outline properties by default. If you want to set it runtime, please call SetOutlineProperties.
+	UPROPERTY(BlueprintReadOnly, EditAnywhere, ReplicatedUsing=OnRep_Properties, Category = "Outline")
 	FOutlineCompProperties Properties;
 
 	UFUNCTION()
 	void OnRep_Properties();
 
-	UFUNCTION(BlueprintCallable)
+	// You can toggle outline by your self
+	UFUNCTION(BlueprintCallable, Category = "Outline")
 	void ToggleOutline(bool bEnable);
 
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
+	// Add visible identity tag to container
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Outline")
 	void AddIdentityTag(FGameplayTag Tag);
 
-	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
+	// Remove visible identity tag in container
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Outline")
 	bool RemoveIdentityTag(FGameplayTag Tag);
+
+	// Set stencil value
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Outline")
+	void SetStencilValue(int StencilValue);
 	
 protected:
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const override;
 };

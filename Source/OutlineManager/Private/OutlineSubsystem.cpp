@@ -56,6 +56,13 @@ void UOutlineSubsystem::OnVisibleTagsUpdatedEvent()
 void UOutlineSubsystem::RegisterOutlineComponent(UOutlineActorComponent* OutlineActorComponent)
 {
 	RegisteredOutlineActorComponents.Add(OutlineActorComponent);
+	ComponentUpdatedEvent.Broadcast(OutlineActorComponent);
+}
+
+void UOutlineSubsystem::UnregisterOutlineComponent(UOutlineActorComponent* OutlineActorComponent)
+{
+	RegisteredOutlineActorComponents.Remove(OutlineActorComponent);
+	ComponentUpdatedEvent.Broadcast(OutlineActorComponent);
 }
 
 void UOutlineSubsystem::Initialize(FSubsystemCollectionBase& Collection)

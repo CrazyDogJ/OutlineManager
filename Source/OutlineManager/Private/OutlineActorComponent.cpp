@@ -34,20 +34,25 @@ void UOutlineActorComponent::ToggleOutline(bool bEnable)
 		return;
 	}
 
-	// Ignore local pawn;
-	if (GetOwner()->GetLocalRole() == ROLE_AutonomousProxy)
+	// Should ignore self outline.
+	if (Properties.bIgnoreSelf)
 	{
-		return;
-	}
-	// Ignore local pawn when listen server.
-	if (auto OwnerPawn = Cast<APawn>(GetOwner()))
-	{
-		if (OwnerPawn->IsLocallyControlled())
+		// Ignore local pawn
+		if (GetOwner()->GetLocalRole() == ROLE_AutonomousProxy)
 		{
 			return;
 		}
+		// Ignore local pawn when listen server.
+		if (auto OwnerPawn = Cast<APawn>(GetOwner()))
+		{
+			if (OwnerPawn->IsLocallyControlled())
+			{
+				return;
+			}
+		}
 	}
-	
+
+	// Set stencil for every mesh component.
 	auto Comps = GetOwner()->GetComponents();
 	for (auto Comp : Comps)
 	{
@@ -61,14 +66,33 @@ void UOutlineActorComponent::ToggleOutline(bool bEnable)
 
 void UOutlineActorComponent::AddIdentityTag(FGameplayTag Tag)
 {
-	Properties.IdentityGameplayTag.AddTag(Tag);
-	OnRep_Properties();
+	if (Tag.IsValid())
+	{
+		Properties.IdentityGameplayTag.AddTag(Tag);
+		OnRep_Properties();
+	}
 }
 
 bool UOutlineActorComponent::RemoveIdentityTag(FGameplayTag Tag)
 {
-	return Properties.IdentityGameplayTag.RemoveTag(Tag);
-	OnRep_Properties();
+	if (Tag.IsValid())
+	{
+		if (Properties.IdentityGameplayTag.RemoveTag(Tag))
+		{
+			OnRep_Properties();
+			return true;
+		}
+	}
+	return false;
+}
+
+void UOutlineActorComponent::SetStencilValue(int StencilValue)
+{
+	if (Properties.CustomStencilValue != StencilValue)
+	{
+		Properties.CustomStencilValue = StencilValue;
+		OnRep_Properties();
+	}
 }
 
 void UOutlineActorComponent::BeginPlay()
@@ -76,7 +100,16 @@ void UOutlineActorComponent::BeginPlay()
 	Super::BeginPlay();
 
 	GetWorld()->GetSubsystem<UOutlineSubsystem>()->RegisterOutlineComponent(this);
-	GetWorld()->GetSubsystem<UOutlineSubsystem>()->ComponentUpdatedEvent.Broadcast(this);
+}
+
+void UOutlineActorComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	Super::EndPlay(EndPlayReason);
+
+	Properties.IdentityGameplayTag = FGameplayTagContainer::EmptyContainer;
+	Properties.CustomStencilValue = -1;
+	
+	GetWorld()->GetSubsystem<UOutlineSubsystem>()->UnregisterOutlineComponent(this);
 }
 
 void UOutlineActorComponent::GetLifetimeReplicatedProps(TArray<class FLifetimeProperty>& OutLifetimeProps) const

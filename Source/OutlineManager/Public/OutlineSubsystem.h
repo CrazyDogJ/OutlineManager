@@ -26,28 +26,31 @@ protected:
 	FGameplayTagContainer VisibleGameplayTagContainer;
 	
 public:
-	UFUNCTION(BlueprintCallable)
+#pragma region Getter
+	UFUNCTION(BlueprintCallable, Category = "Outline|Subsystem")
 	TArray<UOutlineActorComponent*> GetRegisteredOutlineComponents() const {return RegisteredOutlineActorComponents.Array();}
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Outline|Subsystem")
 	FGameplayTagContainer GetVisibleGameplayTagContainer() const {return VisibleGameplayTagContainer;}
-
-	UFUNCTION(BlueprintCallable)
+#pragma endregion
+#pragma region VisibleTagsUpdateFunctions
+	UFUNCTION(BlueprintCallable, Category = "Outline|Subsystem")
 	void AddVisibleTag(FGameplayTag AddGameplayTag);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Outline|Subsystem")
 	bool RemoveVisibleTag(FGameplayTag RemoveGameplayTag);
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Outline|Subsystem")
 	void ClearVisibleTag();
 
-	UFUNCTION(BlueprintCallable)
+	UFUNCTION(BlueprintCallable, Category = "Outline|Subsystem")
 	void SetVisibleTagContainer(FGameplayTagContainer Container);
-	
-	UPROPERTY(BlueprintAssignable)
+#pragma endregion
+#pragma region Events
+	UPROPERTY(BlueprintAssignable, Category = "Outline|Subsystem")
 	FOnOutlineActorComponentUpdate ComponentUpdatedEvent;
 
-	UPROPERTY(BlueprintAssignable)
+	UPROPERTY(BlueprintAssignable, Category = "Outline|Subsystem")
 	FOnOutlineVisibleTagsUpdated VisibleTagsUpdatedEvent;
 
 	UFUNCTION()
@@ -55,8 +58,10 @@ public:
 
 	UFUNCTION()
 	void OnVisibleTagsUpdatedEvent();
+#pragma endregion
 	
 	void RegisterOutlineComponent(UOutlineActorComponent* OutlineActorComponent);
+	void UnregisterOutlineComponent(UOutlineActorComponent* OutlineActorComponent);
 
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 };
