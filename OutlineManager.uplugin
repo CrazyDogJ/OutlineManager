@@ -5,7 +5,7 @@
 	"FriendlyName": "OutlineManager",
 	"Description": "Outline subsystem manager",
 	"Category": "Other",
-	"CreatedBy": "CrazyDog",
+	"CreatedBy": "Vzen Lu",
 	"CreatedByURL": "",
 	"DocsURL": "",
 	"MarketplaceURL": "",
@@ -13,11 +13,17 @@
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": false,
+	"EngineVersion": "4.27.2",
 	"Modules": [
 		{
 			"Name": "OutlineManager",
 			"Type": "Runtime",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "Default",
+			"PlatformAllowList": [
+				"Win64",
+				"Android",
+				"Linux"
+			]
 		}
 	]
 }
