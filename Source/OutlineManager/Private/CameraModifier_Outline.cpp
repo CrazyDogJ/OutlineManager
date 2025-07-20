@@ -3,6 +3,8 @@
 #include "CameraModifier_Outline.h"
 
 #include "Kismet/KismetMaterialLibrary.h"
+#include "Materials/MaterialInstanceDynamic.h"
+#include "Engine/World.h"
 
 void UCameraModifier_Outline::AddedToCamera(APlayerCameraManager* Camera)
 {
@@ -10,10 +12,10 @@ void UCameraModifier_Outline::AddedToCamera(APlayerCameraManager* Camera)
 
 	for (auto Itr : OutlineColors)
 	{
-		auto InstanceMat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(GetWorld(), OutlineMaterial);
+		auto InstanceMat = UKismetMaterialLibrary::CreateDynamicMaterialInstance(Cast<UObject>(GetWorld()), OutlineMaterial);
 		InstanceMat->SetVectorParameterValue(ColorPropertyName, Itr.Value);
 		InstanceMat->SetScalarParameterValue(CustomStencilPropertyName, Itr.Key);
-		OutlineInstanceMaterials.Add(Itr.Key, InstanceMat);
+		OutlineInstanceMaterials.Add(Itr.Key, Cast<UMaterialInterface>(InstanceMat));
 	}
 }
 
@@ -26,7 +28,7 @@ void UCameraModifier_Outline::ModifyPostProcess(float DeltaTime, float& PostProc
 	TArray<FWeightedBlendable> Final;
 	for (auto Itr : OutlineInstanceMaterials)
 	{
-		Final.Add(FWeightedBlendable(1.0, Itr.Value));
+		Final.Add(FWeightedBlendable(1.0, Cast<UObject>(Itr.Value)));
 	}
 	PostProcessSettings.WeightedBlendables.Array = Final;
 }
