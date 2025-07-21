@@ -4,6 +4,10 @@
 
 #include "OutlineSubsystem.h"
 #include "Net/UnrealNetwork.h"
+#include "Engine/World.h"
+#include "GameFramework/Actor.h"
+#include "GameFramework/Pawn.h"
+#include "Components/MeshComponent.h"
 
 UOutlineActorComponent::UOutlineActorComponent()
 {
