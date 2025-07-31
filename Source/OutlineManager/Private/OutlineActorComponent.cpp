@@ -40,11 +40,6 @@ void UOutlineActorComponent::ToggleOutline(bool bEnable)
 	// Should ignore self outline.
 	if (Properties.bIgnoreSelf)
 	{
-		// Ignore local pawn
-		if (GetOwner()->GetLocalRole() == ROLE_AutonomousProxy)
-		{
-			return;
-		}
 		// Ignore local pawn when listen server.
 		if (auto OwnerPawn = Cast<APawn>(GetOwner()))
 		{
